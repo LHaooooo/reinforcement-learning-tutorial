@@ -7,6 +7,7 @@ env = gym.make("CartPole-v1")
 n_actions = env.action_space.n
 n_bins = 40
 
+
 # 状态离散化
 def discretize(obs):
     cart_pos, cart_vel, pole_angle, pole_vel = obs
@@ -27,7 +28,8 @@ def discretize(obs):
     idx = np.clip(idx, 0, n_bins - 1)
     return tuple(idx)
 
-Q = np.zeros([n_bins]*4 + [n_actions], dtype=np.float32)
+
+Q = np.zeros([n_bins] * 4 + [n_actions], dtype=np.float32)
 alpha = 0.1
 gamma = 0.99
 epsilon = 0.1

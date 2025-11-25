@@ -20,9 +20,11 @@ def _import_gym() -> Any:
     """Import gymnasium if available, otherwise fall back to legacy gym."""
     try:
         import gymnasium as gym  # type: ignore
+
         return gym
     except ImportError:
         import gym  # type: ignore
+
         return gym
 
 
@@ -84,7 +86,9 @@ def run(env_id: str, seconds: float, fps: int, verbose: bool) -> None:
         print(f"\n{PRINT_PREFIX} Interrupted by user.", flush=True)
     finally:
         env.close()
-        print(f"{PRINT_PREFIX} Render test finished and environment closed.", flush=True)
+        print(
+            f"{PRINT_PREFIX} Render test finished and environment closed.", flush=True
+        )
 
 
 def main() -> None:

@@ -3,15 +3,20 @@ import torch.nn as nn
 import torch.optim as optim
 import gymnasium as gym
 
+
 class PolicyNet(nn.Module):
     def __init__(self, n_states, n_actions):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(n_states, 128), nn.ReLU(),
-            nn.Linear(128, n_actions), nn.Softmax(dim=-1)
+            nn.Linear(n_states, 128),
+            nn.ReLU(),
+            nn.Linear(128, n_actions),
+            nn.Softmax(dim=-1),
         )
+
     def forward(self, x):
         return self.net(x)
+
 
 env = gym.make("CartPole-v1")
 n_states = env.observation_space.shape[0]

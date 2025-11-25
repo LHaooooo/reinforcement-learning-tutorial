@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 
+
 def discount_cumsum(rewards, gamma):
     res = np.zeros_like(rewards, dtype=np.float32)
     running = 0.0
@@ -8,6 +9,7 @@ def discount_cumsum(rewards, gamma):
         running = rewards[t] + gamma * running
         res[t] = running
     return res
+
 
 def to_tensor(x, device):
     if isinstance(x, np.ndarray):

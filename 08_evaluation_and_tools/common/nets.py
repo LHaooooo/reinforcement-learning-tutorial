@@ -1,8 +1,11 @@
 import torch
 import torch.nn as nn
 
+
 class MLP(nn.Module):
-    def __init__(self, input_dim, output_dim, hidden_sizes=(128, 128), activation=nn.ReLU):
+    def __init__(
+        self, input_dim, output_dim, hidden_sizes=(128, 128), activation=nn.ReLU
+    ):
         super().__init__()
         layers = []
         last_dim = input_dim

@@ -6,12 +6,15 @@ import gymnasium as gym
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 class ActorCriticNet(nn.Module):
     def __init__(self, obs_dim, act_dim):
         super().__init__()
         self.feature = nn.Sequential(
-            nn.Linear(obs_dim, 64), nn.ReLU(),
-            nn.Linear(64, 64), nn.ReLU(),
+            nn.Linear(obs_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, 64),
+            nn.ReLU(),
         )
         self.policy_head = nn.Linear(64, act_dim)
         self.value_head = nn.Linear(64, 1)
@@ -22,8 +25,17 @@ class ActorCriticNet(nn.Module):
         value = self.value_head(feat)
         return logits, value
 
-def ppo_cartpole(num_episodes=500, gamma=0.99, lam=0.95, clip_ratio=0.2,
-                 lr=3e-4, train_iters=4, batch_size=64, steps_per_epoch=2000):
+
+def ppo_cartpole(
+    num_episodes=500,
+    gamma=0.99,
+    lam=0.95,
+    clip_ratio=0.2,
+    lr=3e-4,
+    train_iters=4,
+    batch_size=64,
+    steps_per_epoch=2000,
+):
 
     env = gym.make("CartPole-v1")
     obs_dim = env.observation_space.shape[0]
@@ -40,7 +52,7 @@ def ppo_cartpole(num_episodes=500, gamma=0.99, lam=0.95, clip_ratio=0.2,
                 next_values = 0
                 next_nonterminal = 1.0 - dones[t]
             else:
-                next_values = values[t+1]
+                next_values = values[t + 1]
                 next_nonterminal = 1.0 - dones[t]
             delta = rewards[t] + gamma * next_values * next_nonterminal - values[t]
             lastgaelam = delta + gamma * lam * next_nonterminal * lastgaelam
@@ -113,7 +125,7 @@ def ppo_cartpole(num_episodes=500, gamma=0.99, lam=0.95, clip_ratio=0.2,
                 ratio = torch.exp(logp - mb_logp_old)
 
                 surr1 = ratio * mb_adv
-                surr2 = torch.clamp(ratio, 1-clip_ratio, 1+clip_ratio) * mb_adv
+                surr2 = torch.clamp(ratio, 1 - clip_ratio, 1 + clip_ratio) * mb_adv
                 policy_loss = -torch.min(surr1, surr2).mean()
                 value_loss = ((mb_ret - value.squeeze()) ** 2).mean()
                 entropy = dist.entropy().mean()
@@ -128,6 +140,7 @@ def ppo_cartpole(num_episodes=500, gamma=0.99, lam=0.95, clip_ratio=0.2,
             print(f"[PPO] Epoch {ep+1}/{num_episodes} finished")
 
     env.close()
+
 
 if __name__ == "__main__":
     ppo_cartpole()

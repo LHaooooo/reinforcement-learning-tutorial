@@ -6,16 +6,21 @@ from collections import deque
 import gymnasium as gym
 import numpy as np
 
+
 class DQN(nn.Module):
     def __init__(self, n_states, n_actions):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(n_states, 128), nn.ReLU(),
-            nn.Linear(128, 128), nn.ReLU(),
-            nn.Linear(128, n_actions)
+            nn.Linear(n_states, 128),
+            nn.ReLU(),
+            nn.Linear(128, 128),
+            nn.ReLU(),
+            nn.Linear(128, n_actions),
         )
+
     def forward(self, x):
         return self.net(x)
+
 
 env = gym.make("CartPole-v1")
 n_states = env.observation_space.shape[0]
@@ -30,12 +35,14 @@ optimizer = optim.Adam(policy_net.parameters(), lr=1e-3)
 memory = deque(maxlen=50000)
 batch_size, gamma = 64, 0.99
 
+
 def select_action(state, eps):
     if random.random() < eps:
         return env.action_space.sample()
     with torch.no_grad():
         s = torch.tensor(state, dtype=torch.float32, device=device).unsqueeze(0)
         return policy_net(s).argmax().item()
+
 
 def optimize():
     if len(memory) < batch_size:
@@ -56,6 +63,7 @@ def optimize():
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
+
 
 eps = 1.0
 for episode in range(500):

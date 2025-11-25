@@ -6,12 +6,15 @@ import gymnasium as gym
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 class ActorCriticNet(nn.Module):
     def __init__(self, obs_dim, act_dim):
         super().__init__()
         self.feature = nn.Sequential(
-            nn.Linear(obs_dim, 128), nn.ReLU(),
-            nn.Linear(128, 128), nn.ReLU(),
+            nn.Linear(obs_dim, 128),
+            nn.ReLU(),
+            nn.Linear(128, 128),
+            nn.ReLU(),
         )
         self.policy_head = nn.Linear(128, act_dim)
         self.value_head = nn.Linear(128, 1)
@@ -21,6 +24,7 @@ class ActorCriticNet(nn.Module):
         logits = self.policy_head(feat)
         value = self.value_head(feat)
         return logits, value
+
 
 def a2c_train(num_episodes=500, gamma=0.99, value_coef=0.5, entropy_coef=0.01):
     env = gym.make("CartPole-v1")
@@ -51,14 +55,19 @@ def a2c_train(num_episodes=500, gamma=0.99, value_coef=0.5, entropy_coef=0.01):
             with torch.no_grad():
                 _, next_value = net(s2)
                 if done_flag:
-                    target_value = torch.tensor([[reward]], dtype=torch.float32, device=device)
+                    target_value = torch.tensor(
+                        [[reward]], dtype=torch.float32, device=device
+                    )
                 else:
-                    target_value = torch.tensor([[reward]], dtype=torch.float32, device=device) + gamma * next_value
+                    target_value = (
+                        torch.tensor([[reward]], dtype=torch.float32, device=device)
+                        + gamma * next_value
+                    )
 
             advantage = target_value - value
 
             policy_loss = -(log_prob * advantage.detach())
-            value_loss = (advantage ** 2) * value_coef
+            value_loss = (advantage**2) * value_coef
             loss = policy_loss + value_loss - entropy_coef * entropy
 
             optimizer.zero_grad()
@@ -73,6 +82,7 @@ def a2c_train(num_episodes=500, gamma=0.99, value_coef=0.5, entropy_coef=0.01):
             print(f"[A2C] Episode {ep+1}/{num_episodes}, total reward = {ep_reward}")
 
     env.close()
+
 
 if __name__ == "__main__":
     a2c_train()
