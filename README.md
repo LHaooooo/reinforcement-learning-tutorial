@@ -66,8 +66,6 @@ reinforcement-learning-tutorial/
     └── glossary.md
 ```
 
-> ⚠️ 提示：实际路径名可以按你自己的口味微调，上面只是推荐布局。
-
 ---
 
 ## 环境安装
@@ -79,18 +77,15 @@ reinforcement-learning-tutorial/
 pip install -r requirements.txt
 ```
 
-默认依赖类似：
+### 环境验证（渲染测试）
 
-```txt
-gymnasium==0.29.1
-torch==2.3.0
-numpy==1.26.4
+安装好依赖后，可用脚本快速确认本机渲染链路是否正常（需要图形界面）：
+
+```bash
+uv run python scripts/test_gym_render.py --seconds 5 --verbose
 ```
 
-如果你使用的是老版本 `gym` 而不是 `gymnasium`，需要在代码中把：
-
-- `import gymnasium as gym` 改成 `import gym`
-- `gym.make("EnvName", render_mode="human")` 改成老接口（有的版本用 `env.render()`）
+默认测试 `CartPole-v1`；能弹出窗口并在终端看到日志，即表示 Gym/Gymnasium 渲染可用。可用 `--env Pendulum-v1` 切换环境。
 
 ---
 

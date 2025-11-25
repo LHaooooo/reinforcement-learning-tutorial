@@ -14,13 +14,18 @@ def discretize(obs):
     bins_vel = np.linspace(-3.0, 3.0, n_bins)
     bins_angle = np.linspace(-0.21, 0.21, n_bins)
     bins_pole_vel = np.linspace(-3.5, 3.5, n_bins)
-    idx = (
-        np.digitize(cart_pos, bins_pos),
-        np.digitize(cart_vel, bins_vel),
-        np.digitize(pole_angle, bins_angle),
-        np.digitize(pole_vel, bins_pole_vel),
+    # np.digitize may return index == n_bins when value is above last edge; clip to avoid out-of-range
+    idx = np.array(
+        [
+            np.digitize(cart_pos, bins_pos),
+            np.digitize(cart_vel, bins_vel),
+            np.digitize(pole_angle, bins_angle),
+            np.digitize(pole_vel, bins_pole_vel),
+        ],
+        dtype=np.int64,
     )
-    return idx
+    idx = np.clip(idx, 0, n_bins - 1)
+    return tuple(idx)
 
 Q = np.zeros([n_bins]*4 + [n_actions], dtype=np.float32)
 alpha = 0.1
