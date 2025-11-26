@@ -121,6 +121,9 @@ python 02_tabular_methods/q_learning.py
 4. `1.3_classification_of_rl.md`  
    - Value-based / Policy-based / Actor-Critic / On-policy / Off-policy
 
+5. 动态规划代码小样例：`value_iteration_grid.py`  
+   - 4x4 GridWorld 的表格价值迭代，演示 Bellman 最优方程与贪心策略抽取
+
 这一阶段**不需要写代码**，把符号和概念搞清楚。
 
 ---

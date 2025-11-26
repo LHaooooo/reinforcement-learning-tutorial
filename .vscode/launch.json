@@ -1,0 +1,14 @@
+{
+  // VS Code debugger configuration for quick runs inside this repo.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Value Iteration Grid",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/01_basics/value_iteration_grid.py",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    },
+  ]
+}
