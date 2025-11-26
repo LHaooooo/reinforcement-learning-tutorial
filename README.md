@@ -67,8 +67,6 @@ python 02_tabular_methods/q_learning.py
 5. 动态规划代码小样例：`value_iteration_grid.py`  
    - 4x4 GridWorld 的表格价值迭代，演示 Bellman 最优方程与贪心策略抽取
 
-这一阶段**不需要写代码**，把符号和概念搞清楚。
-
 ---
 
 ### 第 2 阶段：表格方法（Tabular RL）
