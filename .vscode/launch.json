@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Value Iteration Grid",
+      "name": "Debug Python",
       "type": "debugpy",
       "request": "launch",
       // "program": "${workspaceFolder}/01_basics/value_iteration_grid.py",
@@ -13,7 +13,10 @@
       // "program": "${workspaceFolder}/03_dqn/dqn_cartpole.py",
       // "program": "${workspaceFolder}/04_policy_gradient/reinforce_cartpole.py",
       // "program": "${workspaceFolder}/05_actor_critic/a2c_cartpole.py",
-      "program": "${workspaceFolder}/05_actor_critic/ppo_cartpole.py",
+      // "program": "${workspaceFolder}/05_actor_critic/ppo_cartpole.py",
+      // "program": "${workspaceFolder}/06_offpolicy_rl/ddpg_pendulum.py",
+      // "program": "${workspaceFolder}/06_offpolicy_rl/td3_pendulum.py",
+      "program": "${workspaceFolder}/06_offpolicy_rl/sac_pendulum.py",
       "console": "integratedTerminal",
       "justMyCode": false,
       "env": {},
