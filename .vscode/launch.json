@@ -6,9 +6,13 @@
       "name": "Python: Value Iteration Grid",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/01_basics/value_iteration_grid.py",
+      // "program": "${workspaceFolder}/01_basics/value_iteration_grid.py",
+      // "program": "${workspaceFolder}/02_tabular_methods/mc_control_cartpole.py",
+      // "program": "${workspaceFolder}/02_tabular_methods/sarsa_cartpole.py",
+      "program": "${workspaceFolder}/02_tabular_methods/q_learning.py",
       "console": "integratedTerminal",
-      "justMyCode": false
+      "justMyCode": false,
+      "env": {},
     },
   ]
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Off-policy tabular Q-learning on CartPole-v1 (discretized state)."""
+"""On-policy Sarsa for CartPole-v1 with state discretization."""
 
 import numpy as np
 
@@ -28,29 +28,31 @@ def main():
     n_actions = env.action_space.n
     Q = np.zeros([disc.n_bins] * 4 + [n_actions], dtype=np.float32)
 
-    for ep in range(episodes):
+    for ep in range(1, episodes + 1):
         epsilon = epsilon_sched.value(ep)
         obs, _ = env.reset(seed=seed)
         s = disc(obs)
+        a = epsilon_greedy(Q, s, epsilon)
         done = False
-        total_reward = 0
+        total_reward = 0.0
 
         while not done:
-            a = epsilon_greedy(Q, s, epsilon)
             next_obs, reward, terminated, truncated, _ = env.step(a)
             if render:
                 env.render()
             done = terminated or truncated
             s2 = disc(next_obs)
+            a2 = epsilon_greedy(Q, s2, epsilon)
 
-            Q[s][a] += alpha * (reward + gamma * np.max(Q[s2]) - Q[s][a])
+            td_target = reward + gamma * Q[s2][a2] * (1.0 - float(done))
+            Q[s][a] += alpha * (td_target - Q[s][a])
 
-            s = s2
+            s, a = s2, a2
             total_reward += reward
 
-        if (ep + 1) % 10 == 0:
+        if ep % 10 == 0:
             print(
-                f"[Q-Learning] Episode {ep+1}/{episodes}, epsilon={epsilon:.3f}, total reward={total_reward}"
+                f"[Sarsa] Episode {ep}/{episodes}, epsilon={epsilon:.3f}, total reward={total_reward}"
             )
 
     env.close()
